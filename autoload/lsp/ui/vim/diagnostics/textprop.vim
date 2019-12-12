@@ -123,6 +123,10 @@ function! s:place_highlights(server_name, path, diagnostics) abort
             let l:end_line = l:item['range']['end']['line'] + 1
             let l:end_char = l:item['range']['end']['character']
             let l:end_col = lsp#utils#to_col(l:bufnr, l:end_line, l:end_char)
+            if !has_key(l:item, 'severity')
+              " default to an error if there is no severity
+              let l:item.severity = 1
+            endif
 
             let l:prop_type = s:get_prop_type(a:server_name, l:item['severity'])
             call prop_add(l:start_line, l:start_col, {
